@@ -2,10 +2,30 @@ document
 .getElementById("btnGenerar")
 .addEventListener("click", generarPDF);
 
+
+function obtenerConsecutivo() {
+
+    let numero =
+        parseInt(
+            localStorage.getItem("contadorPDF")
+        ) || 1;
+
+    localStorage.setItem(
+        "contadorPDF",
+        numero + 1
+    );
+
+    return "N" +
+        String(numero).padStart(4, "0");
+}
+
+
 function leerImagen(input) {
+
     return new Promise((resolve) => {
 
         if (!input.files.length) {
+
             resolve(null);
             return;
         }
@@ -13,12 +33,18 @@ function leerImagen(input) {
         const reader = new FileReader();
 
         reader.onload = function(e) {
-            resolve(e.target.result);
+
+            resolve(
+                e.target.result
+            );
         };
 
-        reader.readAsDataURL(input.files[0]);
+        reader.readAsDataURL(
+            input.files[0]
+        );
     });
 }
+
 
 async function generarPDF() {
 
@@ -26,10 +52,50 @@ async function generarPDF() {
 
     const pdf = new jsPDF();
 
-    let y = 15;
+    const consecutivo =
+        obtenerConsecutivo();
 
-    pdf.setFontSize(18);
-    pdf.text("GUIA DE MANTENIMIENTO", 15, y);
+    const fotoGeneral =
+        await leerImagen(
+            document.getElementById("fotoGeneral")
+        );
+
+    const fotoInicial =
+        await leerImagen(
+            document.getElementById("fotoInicial")
+        );
+
+    const fotoIntervencion =
+        await leerImagen(
+            document.getElementById("fotoIntervencion")
+        );
+
+    const fotoFinal =
+        await leerImagen(
+            document.getElementById("fotoFinal")
+        );
+
+    let y = 20;
+
+    pdf.setFontSize(20);
+
+    pdf.text(
+        "GUIA DE MANTENIMIENTO",
+        105,
+        y,
+        { align: "center" }
+    );
+
+    y += 10;
+
+    pdf.setFontSize(14);
+
+    pdf.text(
+        consecutivo,
+        105,
+        y,
+        { align: "center" }
+    );
 
     y += 15;
 
@@ -83,181 +149,199 @@ async function generarPDF() {
 
     y += 15;
 
-    pdf.text("Estado Inicial:", 15, y);
-
-    y += 7;
+    pdf.setFontSize(14);
 
     pdf.text(
+        "ESTADO INICIAL",
+        15,
+        y
+    );
+
+    y += 8;
+
+    pdf.setFontSize(11);
+
+    let textoInicial =
         pdf.splitTextToSize(
             document.getElementById("estadoInicial").value,
             170
-        ),
+        );
+
+    pdf.text(
+        textoInicial,
         15,
         y
     );
 
-    y += 25;
+    y += (textoInicial.length * 6) + 5;
 
-    pdf.text("Intervencion:", 15, y);
+    if (fotoInicial) {
 
-    y += 7;
+        pdf.addImage(
+            fotoInicial,
+            "JPEG",
+            15,
+            y,
+            80,
+            60
+        );
+
+        y += 70;
+    }
+
+    if (y > 230) {
+
+        pdf.addPage();
+        y = 20;
+    }
+
+    pdf.setFontSize(14);
 
     pdf.text(
+        "INTERVENCION",
+        15,
+        y
+    );
+
+    y += 8;
+
+    pdf.setFontSize(11);
+
+    let textoIntervencion =
         pdf.splitTextToSize(
             document.getElementById("intervencion").value,
             170
-        ),
+        );
+
+    pdf.text(
+        textoIntervencion,
         15,
         y
     );
 
-    y += 25;
+    y += (textoIntervencion.length * 6) + 5;
 
-    pdf.text("Estado Final:", 15, y);
+    if (fotoIntervencion) {
 
-    y += 7;
+        pdf.addImage(
+            fotoIntervencion,
+            "JPEG",
+            15,
+            y,
+            80,
+            60
+        );
+
+        y += 70;
+    }
+
+    if (y > 230) {
+
+        pdf.addPage();
+        y = 20;
+    }
+
+    pdf.setFontSize(14);
 
     pdf.text(
+        "ESTADO FINAL",
+        15,
+        y
+    );
+
+    y += 8;
+
+    pdf.setFontSize(11);
+
+    let textoFinal =
         pdf.splitTextToSize(
             document.getElementById("estadoFinal").value,
             170
-        ),
+        );
+
+    pdf.text(
+        textoFinal,
         15,
         y
     );
 
-    y += 25;
+    y += (textoFinal.length * 6) + 5;
 
-    pdf.text("Observaciones:", 15, y);
+    if (fotoFinal) {
 
-    y += 7;
+        pdf.addImage(
+            fotoFinal,
+            "JPEG",
+            15,
+            y,
+            80,
+            60
+        );
+
+        y += 70;
+    }
+
+    if (y > 230) {
+
+        pdf.addPage();
+        y = 20;
+    }
+
+    pdf.setFontSize(14);
 
     pdf.text(
+        "OBSERVACIONES",
+        15,
+        y
+    );
+
+    y += 8;
+
+    pdf.setFontSize(11);
+
+    let observaciones =
         pdf.splitTextToSize(
             document.getElementById("observaciones").value,
             170
-        ),
+        );
+
+    pdf.text(
+        observaciones,
         15,
         y
     );
 
-    const fotoGeneral =
-        await leerImagen(
-            document.getElementById("fotoGeneral")
-        );
+    y += (observaciones.length * 6) + 10;
 
-    const fotoInicial =
-        await leerImagen(
-            document.getElementById("fotoInicial")
-        );
+    if (fotoGeneral) {
 
-    const fotoIntervencion =
-        await leerImagen(
-            document.getElementById("fotoIntervencion")
-        );
-
-    const fotoFinal =
-        await leerImagen(
-            document.getElementById("fotoFinal")
-        );
-
-    if (
-        fotoGeneral ||
-        fotoInicial ||
-        fotoIntervencion ||
-        fotoFinal
-    ) {
-
-        pdf.addPage();
-
-        let imgY = 20;
-
-        if (fotoGeneral) {
-
-            pdf.text(
-                "Foto General",
-                15,
-                imgY
-            );
-
-            imgY += 5;
-
-            pdf.addImage(
-                fotoGeneral,
-                "JPEG",
-                15,
-                imgY,
-                80,
-                60
-            );
-
-            imgY += 70;
-        }
-
-        if (fotoInicial) {
-
-            pdf.text(
-                "Estado Inicial",
-                15,
-                imgY
-            );
-
-            imgY += 5;
-
-            pdf.addImage(
-                fotoInicial,
-                "JPEG",
-                15,
-                imgY,
-                80,
-                60
-            );
-
-            imgY += 70;
-        }
-
-        if (fotoIntervencion) {
-
-            pdf.text(
-                "Intervencion",
-                15,
-                imgY
-            );
-
-            imgY += 5;
-
-            pdf.addImage(
-                fotoIntervencion,
-                "JPEG",
-                15,
-                imgY,
-                80,
-                60
-            );
-
-            imgY += 70;
-        }
-
-        if (fotoFinal) {
+        if (y > 180) {
 
             pdf.addPage();
-
-            pdf.text(
-                "Estado Final",
-                15,
-                20
-            );
-
-            pdf.addImage(
-                fotoFinal,
-                "JPEG",
-                15,
-                25,
-                80,
-                60
-            );
+            y = 20;
         }
+
+        pdf.setFontSize(14);
+
+        pdf.text(
+            "FOTO GENERAL",
+            15,
+            y
+        );
+
+        y += 10;
+
+        pdf.addImage(
+            fotoGeneral,
+            "JPEG",
+            15,
+            y,
+            120,
+            90
+        );
     }
 
-    pdf.save("Guia_Mantenimiento.pdf");
+    pdf.save(
+        `${consecutivo}_Guia_Mantenimiento.pdf`
+    );
 }
