@@ -2,136 +2,262 @@ document
 .getElementById("btnGenerar")
 .addEventListener("click", generarPDF);
 
+function leerImagen(input) {
+    return new Promise((resolve) => {
+
+        if (!input.files.length) {
+            resolve(null);
+            return;
+        }
+
+        const reader = new FileReader();
+
+        reader.onload = function(e) {
+            resolve(e.target.result);
+        };
+
+        reader.readAsDataURL(input.files[0]);
+    });
+}
+
 async function generarPDF() {
 
     const { jsPDF } = window.jspdf;
 
     const pdf = new jsPDF();
 
-    let y = 20;
+    let y = 15;
 
     pdf.setFontSize(18);
-    pdf.text("GUIA DE MANTENIMIENTO", 20, y);
+    pdf.text("GUIA DE MANTENIMIENTO", 15, y);
 
     y += 15;
 
     pdf.setFontSize(12);
 
     pdf.text(
-        "Fecha: " +
-        document.getElementById("fecha").value,
-        20,
+        `Fecha: ${document.getElementById("fecha").value}`,
+        15,
         y
     );
 
-    y += 10;
+    y += 8;
 
     pdf.text(
-        "Tecnico: " +
-        document.getElementById("tecnico").value,
-        20,
+        `Tecnico: ${document.getElementById("tecnico").value}`,
+        15,
         y
     );
 
-    y += 10;
+    y += 8;
 
     pdf.text(
-        "Tipo mantenimiento: " +
-        document.getElementById("tipoMantenimiento").value,
-        20,
+        `Tipo mantenimiento: ${document.getElementById("tipoMantenimiento").value}`,
+        15,
         y
     );
 
-    y += 10;
+    y += 8;
 
     pdf.text(
-        "Tipo maquina: " +
-        document.getElementById("tipoMaquina").value,
-        20,
+        `Tipo maquina: ${document.getElementById("tipoMaquina").value}`,
+        15,
         y
     );
 
-    y += 10;
+    y += 8;
 
     pdf.text(
-        "Equipo: " +
-        document.getElementById("nombreEquipo").value,
-        20,
+        `Equipo: ${document.getElementById("nombreEquipo").value}`,
+        15,
         y
     );
 
-    y += 10;
+    y += 8;
 
     pdf.text(
-        "Serie: " +
-        document.getElementById("serie").value,
-        20,
+        `Serie: ${document.getElementById("serie").value}`,
+        15,
         y
     );
 
     y += 15;
 
+    pdf.text("Estado Inicial:", 15, y);
+
+    y += 7;
+
     pdf.text(
-        "Estado Inicial:",
-        20,
+        pdf.splitTextToSize(
+            document.getElementById("estadoInicial").value,
+            170
+        ),
+        15,
         y
     );
 
-    y += 8;
+    y += 25;
+
+    pdf.text("Intervencion:", 15, y);
+
+    y += 7;
 
     pdf.text(
-        document.getElementById("estadoInicial").value,
-        20,
+        pdf.splitTextToSize(
+            document.getElementById("intervencion").value,
+            170
+        ),
+        15,
         y
     );
 
-    y += 20;
+    y += 25;
+
+    pdf.text("Estado Final:", 15, y);
+
+    y += 7;
 
     pdf.text(
-        "Intervencion:",
-        20,
+        pdf.splitTextToSize(
+            document.getElementById("estadoFinal").value,
+            170
+        ),
+        15,
         y
     );
 
-    y += 8;
+    y += 25;
+
+    pdf.text("Observaciones:", 15, y);
+
+    y += 7;
 
     pdf.text(
-        document.getElementById("intervencion").value,
-        20,
+        pdf.splitTextToSize(
+            document.getElementById("observaciones").value,
+            170
+        ),
+        15,
         y
     );
 
-    y += 20;
+    const fotoGeneral =
+        await leerImagen(
+            document.getElementById("fotoGeneral")
+        );
 
-    pdf.text(
-        "Estado Final:",
-        20,
-        y
-    );
+    const fotoInicial =
+        await leerImagen(
+            document.getElementById("fotoInicial")
+        );
 
-    y += 8;
+    const fotoIntervencion =
+        await leerImagen(
+            document.getElementById("fotoIntervencion")
+        );
 
-    pdf.text(
-        document.getElementById("estadoFinal").value,
-        20,
-        y
-    );
+    const fotoFinal =
+        await leerImagen(
+            document.getElementById("fotoFinal")
+        );
 
-    y += 20;
+    if (
+        fotoGeneral ||
+        fotoInicial ||
+        fotoIntervencion ||
+        fotoFinal
+    ) {
 
-    pdf.text(
-        "Observaciones:",
-        20,
-        y
-    );
+        pdf.addPage();
 
-    y += 8;
+        let imgY = 20;
 
-    pdf.text(
-        document.getElementById("observaciones").value,
-        20,
-        y
-    );
+        if (fotoGeneral) {
+
+            pdf.text(
+                "Foto General",
+                15,
+                imgY
+            );
+
+            imgY += 5;
+
+            pdf.addImage(
+                fotoGeneral,
+                "JPEG",
+                15,
+                imgY,
+                80,
+                60
+            );
+
+            imgY += 70;
+        }
+
+        if (fotoInicial) {
+
+            pdf.text(
+                "Estado Inicial",
+                15,
+                imgY
+            );
+
+            imgY += 5;
+
+            pdf.addImage(
+                fotoInicial,
+                "JPEG",
+                15,
+                imgY,
+                80,
+                60
+            );
+
+            imgY += 70;
+        }
+
+        if (fotoIntervencion) {
+
+            pdf.text(
+                "Intervencion",
+                15,
+                imgY
+            );
+
+            imgY += 5;
+
+            pdf.addImage(
+                fotoIntervencion,
+                "JPEG",
+                15,
+                imgY,
+                80,
+                60
+            );
+
+            imgY += 70;
+        }
+
+        if (fotoFinal) {
+
+            pdf.addPage();
+
+            pdf.text(
+                "Estado Final",
+                15,
+                20
+            );
+
+            pdf.addImage(
+                fotoFinal,
+                "JPEG",
+                15,
+                25,
+                80,
+                60
+            );
+        }
+    }
 
     pdf.save("Guia_Mantenimiento.pdf");
 }
