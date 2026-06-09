@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guía de Mantenimiento</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="contenedor">
+
+        <h1>Guía de Mantenimiento</h1>
+
+        <form id="formulario">
+
+            <label>Fecha</label>
+            <input type="date" id="fecha">
+
+            <label>Técnico</label>
+            <input type="text" id="tecnico">
+
+            <label>Tipo de mantenimiento</label>
+            <select id="tipoMantenimiento">
+                <option>Preventivo</option>
+                <option>Correctivo</option>
+                <option>Seguimiento</option>
+            </select>
+
+            <label>Tipo de máquina</label>
+            <input type="text" id="tipoMaquina">
+
+            <label>Nombre del equipo</label>
+            <input type="text" id="nombreEquipo">
+
+            <label>Serie</label>
+            <input type="text" id="serie">
+
+            <h2>Foto General</h2>
+
+            <input
+                type="file"
+                id="fotoGeneral"
+                accept="image/*"
+                capture="environment">
+
+            <h2>Estado Inicial</h2>
+
+            <textarea
+                id="estadoInicial"
+                rows="5"></textarea>
+
+            <input
+                type="file"
+                id="fotoInicial"
+                accept="image/*"
+                capture="environment">
+
+            <h2>Intervención</h2>
+
+            <textarea
+                id="intervencion"
+                rows="5"></textarea>
+
+            <input
+                type="file"
+                id="fotoIntervencion"
+                accept="image/*"
+                capture="environment">
+
+            <h2>Estado Final</h2>
+
+            <textarea
+                id="estadoFinal"
+                rows="5"></textarea>
+
+            <input
+                type="file"
+                id="fotoFinal"
+                accept="image/*"
+                capture="environment">
+
+            <h2>Observaciones</h2>
+
+            <textarea
+                id="observaciones"
+                rows="5"></textarea>
+
+            <button
+                type="button"
+                id="btnGenerar">
+                Generar PDF
+            </button>
+
+        </form>
+
+    </div>
+
+    <script src="app.js"></script>
+
+</body>
+</html>
