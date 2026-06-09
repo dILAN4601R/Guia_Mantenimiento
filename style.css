@@ -65,10 +65,19 @@ input[type="file"]{
 }
 .encabezado{
     text-align:center;
-    margin-bottom:30px;
+    margin-bottom:25px;
 }
 
-.encabezado{
-    text-align:center;
-    margin-bottom:25px;
+.banner{
+    width:100%;
+    max-height:180px;
+    object-fit:cover;
+    border-radius:12px;
+    margin-bottom:20px;
+}
+
+.autor{
+    color:#666;
+    font-size:14px;
+    margin-top:10px;
 }
