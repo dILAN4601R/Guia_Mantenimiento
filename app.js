@@ -3,7 +3,34 @@ document
 .addEventListener("click", generarPDF);
 
 
-function obtenerConsecutivo() {
+function actualizarFechaHora(){
+
+    const ahora = new Date();
+
+    document.getElementById("fecha").value =
+        ahora.toLocaleDateString();
+
+    document.getElementById("hora").value =
+        ahora.toLocaleTimeString();
+}
+
+
+function actualizarConsecutivo(){
+
+    let numero =
+        parseInt(
+            localStorage.getItem("contadorPDF")
+        ) || 1;
+
+    document.getElementById(
+        "consecutivoActual"
+    ).innerText =
+        "N" +
+        String(numero).padStart(4,"0");
+}
+
+
+function obtenerConsecutivo(){
 
     let numero =
         parseInt(
@@ -15,24 +42,28 @@ function obtenerConsecutivo() {
         numero + 1
     );
 
+    actualizarConsecutivo();
+
     return "N" +
-        String(numero).padStart(4, "0");
+        String(numero).padStart(4,"0");
 }
 
 
-function leerImagen(input) {
+function leerImagen(input){
 
-    return new Promise((resolve) => {
+    return new Promise((resolve)=>{
 
-        if (!input.files.length) {
+        if(!input.files.length){
 
             resolve(null);
             return;
         }
 
-        const reader = new FileReader();
+        const reader =
+            new FileReader();
 
-        reader.onload = function(e) {
+        reader.onload =
+        function(e){
 
             resolve(
                 e.target.result
@@ -46,7 +77,20 @@ function leerImagen(input) {
 }
 
 
-async function generarPDF() {
+function verificarPagina(pdf,y){
+
+    if(y > 240){
+
+        pdf.addPage();
+
+        return 20;
+    }
+
+    return y;
+}
+
+
+async function generarPDF(){
 
     const { jsPDF } = window.jspdf;
 
@@ -77,24 +121,24 @@ async function generarPDF() {
 
     let y = 20;
 
-    pdf.setFontSize(20);
+    pdf.setFontSize(22);
 
     pdf.text(
         "GUIA DE MANTENIMIENTO",
         105,
         y,
-        { align: "center" }
+        {align:"center"}
     );
 
-    y += 10;
+    y += 12;
 
-    pdf.setFontSize(14);
+    pdf.setFontSize(16);
 
     pdf.text(
         consecutivo,
         105,
         y,
-        { align: "center" }
+        {align:"center"}
     );
 
     y += 15;
@@ -103,6 +147,14 @@ async function generarPDF() {
 
     pdf.text(
         `Fecha: ${document.getElementById("fecha").value}`,
+        15,
+        y
+    );
+
+    y += 8;
+
+    pdf.text(
+        `Hora: ${document.getElementById("hora").value}`,
         15,
         y
     );
@@ -151,15 +203,9 @@ async function generarPDF() {
 
     pdf.setFontSize(14);
 
-    pdf.text(
-        "ESTADO INICIAL",
-        15,
-        y
-    );
+    pdf.text("ESTADO INICIAL",15,y);
 
     y += 8;
-
-    pdf.setFontSize(11);
 
     let textoInicial =
         pdf.splitTextToSize(
@@ -167,33 +213,33 @@ async function generarPDF() {
             170
         );
 
+    pdf.setFontSize(11);
+
     pdf.text(
         textoInicial,
         15,
         y
     );
 
-    y += (textoInicial.length * 6) + 5;
+    y += (textoInicial.length * 6);
 
-    if (fotoInicial) {
+    if(fotoInicial){
+
+        y += 5;
 
         pdf.addImage(
             fotoInicial,
             "JPEG",
-            15,
+            35,
             y,
-            80,
-            60
+            140,
+            100
         );
 
-        y += 70;
+        y += 110;
     }
 
-    if (y > 230) {
-
-        pdf.addPage();
-        y = 20;
-    }
+    y = verificarPagina(pdf,y);
 
     pdf.setFontSize(14);
 
@@ -205,13 +251,13 @@ async function generarPDF() {
 
     y += 8;
 
-    pdf.setFontSize(11);
-
     let textoIntervencion =
         pdf.splitTextToSize(
             document.getElementById("intervencion").value,
             170
         );
+
+    pdf.setFontSize(11);
 
     pdf.text(
         textoIntervencion,
@@ -219,27 +265,25 @@ async function generarPDF() {
         y
     );
 
-    y += (textoIntervencion.length * 6) + 5;
+    y += (textoIntervencion.length * 6);
 
-    if (fotoIntervencion) {
+    if(fotoIntervencion){
+
+        y += 5;
 
         pdf.addImage(
             fotoIntervencion,
             "JPEG",
-            15,
+            35,
             y,
-            80,
-            60
+            140,
+            100
         );
 
-        y += 70;
+        y += 110;
     }
 
-    if (y > 230) {
-
-        pdf.addPage();
-        y = 20;
-    }
+    y = verificarPagina(pdf,y);
 
     pdf.setFontSize(14);
 
@@ -251,13 +295,13 @@ async function generarPDF() {
 
     y += 8;
 
-    pdf.setFontSize(11);
-
     let textoFinal =
         pdf.splitTextToSize(
             document.getElementById("estadoFinal").value,
             170
         );
+
+    pdf.setFontSize(11);
 
     pdf.text(
         textoFinal,
@@ -265,27 +309,25 @@ async function generarPDF() {
         y
     );
 
-    y += (textoFinal.length * 6) + 5;
+    y += (textoFinal.length * 6);
 
-    if (fotoFinal) {
+    if(fotoFinal){
+
+        y += 5;
 
         pdf.addImage(
             fotoFinal,
             "JPEG",
-            15,
+            35,
             y,
-            80,
-            60
+            140,
+            100
         );
 
-        y += 70;
+        y += 110;
     }
 
-    if (y > 230) {
-
-        pdf.addPage();
-        y = 20;
-    }
+    y = verificarPagina(pdf,y);
 
     pdf.setFontSize(14);
 
@@ -297,13 +339,13 @@ async function generarPDF() {
 
     y += 8;
 
-    pdf.setFontSize(11);
-
     let observaciones =
         pdf.splitTextToSize(
             document.getElementById("observaciones").value,
             170
         );
+
+    pdf.setFontSize(11);
 
     pdf.text(
         observaciones,
@@ -311,15 +353,13 @@ async function generarPDF() {
         y
     );
 
-    y += (observaciones.length * 6) + 10;
+    y += (observaciones.length * 6);
 
-    if (fotoGeneral) {
+    if(fotoGeneral){
 
-        if (y > 180) {
+        y = verificarPagina(pdf,y);
 
-            pdf.addPage();
-            y = 20;
-        }
+        y += 10;
 
         pdf.setFontSize(14);
 
@@ -334,10 +374,10 @@ async function generarPDF() {
         pdf.addImage(
             fotoGeneral,
             "JPEG",
-            15,
+            35,
             y,
-            120,
-            90
+            140,
+            100
         );
     }
 
@@ -345,3 +385,13 @@ async function generarPDF() {
         `${consecutivo}_Guia_Mantenimiento.pdf`
     );
 }
+
+
+actualizarFechaHora();
+
+actualizarConsecutivo();
+
+setInterval(
+    actualizarFechaHora,
+    1000
+);
