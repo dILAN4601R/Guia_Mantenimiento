@@ -3,18 +3,6 @@ document
 .addEventListener("click", generarPDF);
 
 
-function actualizarFechaHora(){
-
-    const ahora = new Date();
-
-    document.getElementById("fecha").value =
-        ahora.toLocaleDateString();
-
-    document.getElementById("hora").value =
-        ahora.toLocaleTimeString();
-}
-
-
 function actualizarConsecutivo(){
 
     let numero =
@@ -99,6 +87,14 @@ async function generarPDF(){
     const consecutivo =
         obtenerConsecutivo();
 
+    const ahora = new Date();
+
+    const fechaActual =
+        ahora.toLocaleDateString();
+
+    const horaActual =
+        ahora.toLocaleTimeString();
+
     const fotoGeneral =
         await leerImagen(
             document.getElementById("fotoGeneral")
@@ -146,7 +142,7 @@ async function generarPDF(){
     pdf.setFontSize(12);
 
     pdf.text(
-        `Fecha: ${document.getElementById("fecha").value}`,
+        `Fecha: ${fechaActual}`,
         15,
         y
     );
@@ -154,7 +150,7 @@ async function generarPDF(){
     y += 8;
 
     pdf.text(
-        `Hora: ${document.getElementById("hora").value}`,
+        `Hora: ${horaActual}`,
         15,
         y
     );
@@ -203,7 +199,11 @@ async function generarPDF(){
 
     pdf.setFontSize(14);
 
-    pdf.text("ESTADO INICIAL",15,y);
+    pdf.text(
+        "ESTADO INICIAL",
+        15,
+        y
+    );
 
     y += 8;
 
@@ -288,7 +288,7 @@ async function generarPDF(){
     pdf.setFontSize(14);
 
     pdf.text(
-        "ESTADO FINAL",
+        "INTERVENCION",
         15,
         y
     );
@@ -387,11 +387,4 @@ async function generarPDF(){
 }
 
 
-actualizarFechaHora();
-
 actualizarConsecutivo();
-
-setInterval(
-    actualizarFechaHora,
-    1000
-);
