@@ -2,94 +2,58 @@ document
 .getElementById("btnGenerar")
 .addEventListener("click", generarPDF);
 
-function actualizarConsecutivo(){
 
-```
-let numero =
-    parseInt(
-        localStorage.getItem("contadorPDF")
-    ) || 1;
+function obtenerConsecutivo() {
 
-document.getElementById(
-    "consecutivoActual"
-).innerText =
-    "N" +
-    String(numero).padStart(4,"0");
-```
+    let numero =
+        parseInt(
+            localStorage.getItem("contadorPDF")
+        ) || 1;
 
-}
-
-function obtenerConsecutivo(){
-
-```
-let numero =
-    parseInt(
-        localStorage.getItem("contadorPDF")
-    ) || 1;
-
-localStorage.setItem(
-    "contadorPDF",
-    numero + 1
-);
-
-return "N" +
-    String(numero).padStart(4,"0");
-```
-
-}
-
-function leerImagen(input){
-
-```
-return new Promise((resolve)=>{
-
-    if(!input.files.length){
-        resolve(null);
-        return;
-    }
-
-    const reader =
-        new FileReader();
-
-    reader.onload =
-    function(e){
-        resolve(
-            e.target.result
-        );
-    };
-
-    reader.readAsDataURL(
-        input.files[0]
+    localStorage.setItem(
+        "contadorPDF",
+        numero + 1
     );
-});
-```
 
+    return "N" +
+        String(numero).padStart(4, "0");
 }
 
-async function generarPDF(){
 
-```
-try{
+function leerImagen(input) {
 
-    const { jsPDF } =
-        window.jspdf;
+    return new Promise((resolve) => {
 
-    const pdf =
-        new jsPDF();
+        if (!input.files.length) {
+
+            resolve(null);
+            return;
+        }
+
+        const reader = new FileReader();
+
+        reader.onload = function(e) {
+
+            resolve(
+                e.target.result
+            );
+        };
+
+        reader.readAsDataURL(
+            input.files[0]
+        );
+    });
+}
+
+
+async function generarPDF() {
+
+    const { jsPDF } = window.jspdf;
+
+    const pdf = new jsPDF();
 
     const consecutivo =
         obtenerConsecutivo();
-
-    actualizarConsecutivo();
-
-    const ahora =
-        new Date();
-
-    const fechaActual =
-        ahora.toLocaleDateString();
-
-    const horaActual =
-        ahora.toLocaleTimeString();
 
     const fotoGeneral =
         await leerImagen(
@@ -113,24 +77,24 @@ try{
 
     let y = 20;
 
-    pdf.setFontSize(22);
+    pdf.setFontSize(20);
 
     pdf.text(
         "GUIA DE MANTENIMIENTO",
         105,
         y,
-        {align:"center"}
+        { align: "center" }
     );
 
-    y += 12;
+    y += 10;
 
-    pdf.setFontSize(16);
+    pdf.setFontSize(14);
 
     pdf.text(
         consecutivo,
         105,
         y,
-        {align:"center"}
+        { align: "center" }
     );
 
     y += 15;
@@ -138,15 +102,7 @@ try{
     pdf.setFontSize(12);
 
     pdf.text(
-        `Fecha: ${fechaActual}`,
-        15,
-        y
-    );
-
-    y += 8;
-
-    pdf.text(
-        `Hora: ${horaActual}`,
+        `Fecha: ${document.getElementById("fecha").value}`,
         15,
         y
     );
@@ -194,135 +150,176 @@ try{
     y += 15;
 
     pdf.setFontSize(14);
-    pdf.text("ESTADO INICIAL",15,y);
+
+    pdf.text(
+        "ESTADO INICIAL",
+        15,
+        y
+    );
 
     y += 8;
 
     pdf.setFontSize(11);
 
-    pdf.text(
+    let textoInicial =
         pdf.splitTextToSize(
             document.getElementById("estadoInicial").value,
             170
-        ),
+        );
+
+    pdf.text(
+        textoInicial,
         15,
         y
     );
 
-    y += 20;
+    y += (textoInicial.length * 6) + 5;
 
-    if(fotoInicial){
+    if (fotoInicial) {
 
         pdf.addImage(
             fotoInicial,
             "JPEG",
-            35,
+            15,
             y,
-            140,
-            100
+            80,
+            60
         );
 
-        y += 110;
+        y += 70;
     }
 
-    if(y > 230){
+    if (y > 230) {
+
         pdf.addPage();
         y = 20;
     }
 
     pdf.setFontSize(14);
-    pdf.text("INTERVENCION",15,y);
+
+    pdf.text(
+        "INTERVENCION",
+        15,
+        y
+    );
 
     y += 8;
 
     pdf.setFontSize(11);
 
-    pdf.text(
+    let textoIntervencion =
         pdf.splitTextToSize(
             document.getElementById("intervencion").value,
             170
-        ),
+        );
+
+    pdf.text(
+        textoIntervencion,
         15,
         y
     );
 
-    y += 20;
+    y += (textoIntervencion.length * 6) + 5;
 
-    if(fotoIntervencion){
+    if (fotoIntervencion) {
 
         pdf.addImage(
             fotoIntervencion,
             "JPEG",
-            35,
+            15,
             y,
-            140,
-            100
+            80,
+            60
         );
 
-        y += 110;
+        y += 70;
     }
 
-    if(y > 230){
+    if (y > 230) {
+
         pdf.addPage();
         y = 20;
     }
 
     pdf.setFontSize(14);
-    pdf.text("ESTADO FINAL",15,y);
+
+    pdf.text(
+        "ESTADO FINAL",
+        15,
+        y
+    );
 
     y += 8;
 
     pdf.setFontSize(11);
 
-    pdf.text(
+    let textoFinal =
         pdf.splitTextToSize(
             document.getElementById("estadoFinal").value,
             170
-        ),
+        );
+
+    pdf.text(
+        textoFinal,
         15,
         y
     );
 
-    y += 20;
+    y += (textoFinal.length * 6) + 5;
 
-    if(fotoFinal){
+    if (fotoFinal) {
 
         pdf.addImage(
             fotoFinal,
             "JPEG",
-            35,
+            15,
             y,
-            140,
-            100
+            80,
+            60
         );
 
-        y += 110;
+        y += 70;
     }
 
-    if(y > 230){
+    if (y > 230) {
+
         pdf.addPage();
         y = 20;
     }
 
     pdf.setFontSize(14);
-    pdf.text("OBSERVACIONES",15,y);
+
+    pdf.text(
+        "OBSERVACIONES",
+        15,
+        y
+    );
 
     y += 8;
 
     pdf.setFontSize(11);
 
-    pdf.text(
+    let observaciones =
         pdf.splitTextToSize(
             document.getElementById("observaciones").value,
             170
-        ),
+        );
+
+    pdf.text(
+        observaciones,
         15,
         y
     );
 
-    y += 20;
+    y += (observaciones.length * 6) + 10;
 
-    if(fotoGeneral){
+    if (fotoGeneral) {
+
+        if (y > 180) {
+
+            pdf.addPage();
+            y = 20;
+        }
 
         pdf.setFontSize(14);
 
@@ -337,27 +334,14 @@ try{
         pdf.addImage(
             fotoGeneral,
             "JPEG",
-            35,
+            15,
             y,
-            140,
-            100
+            120,
+            90
         );
     }
 
     pdf.save(
         `${consecutivo}_Guia_Mantenimiento.pdf`
     );
-
-}catch(error){
-
-    alert(
-        "Error generando PDF"
-    );
-
-    console.error(error);
 }
-```
-
-}
-
-actualizarConsecutivo();
