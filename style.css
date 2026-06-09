@@ -1,4 +1,4 @@
-*{
+{
     margin:0;
     padding:0;
     box-sizing:border-box;
@@ -62,4 +62,20 @@ button{
 
 input[type="file"]{
     margin-top:10px;
+}
+.encabezado{
+    text-align:center;
+    margin-bottom:30px;
+}
+
+.logo{
+    width:220px;
+    max-width:90%;
+    margin-bottom:10px;
+}
+
+.autor{
+    color:#666;
+    font-size:14px;
+    margin-top:5px;
 }
