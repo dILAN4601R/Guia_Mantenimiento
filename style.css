@@ -81,3 +81,10 @@ input[type="file"]{
     font-size:14px;
     margin-top:10px;
 }
+.consecutivo{
+    text-align:center;
+    font-size:22px;
+    font-weight:bold;
+    color:#0b5ed7;
+    margin-bottom:20px;
+}
