@@ -2,11 +2,19 @@
 <html lang="es">
 
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
     <title>Guía de Mantenimiento</title>
 
-    <link rel="stylesheet" href="style.css">
+    <link
+        rel="stylesheet"
+        href="style.css">
+
 </head>
 
 <body>
@@ -24,63 +32,104 @@
                 Desarrollado por Dilan Mendoza
             </p>
 
-            <div id="consecutivoActual" class="consecutivo">
+            <div
+                id="consecutivoActual"
+                class="consecutivo">
+
                 N0001
+
             </div>
 
-            <h1>Guía de Mantenimiento</h1>
+            <h1>
+                Guía de Mantenimiento
+            </h1>
 
         </div>
 
         <form id="formulario">
 
-            <label>Fecha</label>
+            <label>
+                Fecha
+            </label>
+
             <input
                 type="text"
                 id="fecha"
                 readonly>
 
-            <label>Hora</label>
+            <label>
+                Hora
+            </label>
+
             <input
                 type="text"
                 id="hora"
                 readonly>
 
-            <label>Técnico</label>
+            <label>
+                Técnico
+            </label>
+
             <input
                 type="text"
                 id="tecnico">
 
-            <label>Tipo de mantenimiento</label>
+            <label>
+                Tipo de mantenimiento
+            </label>
+
             <select id="tipoMantenimiento">
-                <option>Preventivo</option>
-                <option>Correctivo</option>
-                <option>Seguimiento</option>
+
+                <option>
+                    Preventivo
+                </option>
+
+                <option>
+                    Correctivo
+                </option>
+
+                <option>
+                    Seguimiento
+                </option>
+
             </select>
 
-            <label>Tipo de máquina</label>
+            <label>
+                Tipo de máquina
+            </label>
+
             <input
                 type="text"
                 id="tipoMaquina">
 
-            <label>Nombre del equipo</label>
+            <label>
+                Nombre del equipo
+            </label>
+
             <input
                 type="text"
                 id="nombreEquipo">
 
-            <label>Serie</label>
+            <label>
+                Serie
+            </label>
+
             <input
                 type="text"
                 id="serie">
 
-            <h2>Foto General</h2>
+            <h2>
+                Foto General
+            </h2>
 
             <input
                 type="file"
                 id="fotoGeneral"
                 accept="image/*">
 
-            <h2>Estado Inicial</h2>
+            <h2>
+                Estado Inicial
+            </h2>
 
             <textarea
                 id="estadoInicial"
@@ -91,18 +140,42 @@
                 id="fotoInicial"
                 accept="image/*">
 
-            <h2>Intervención</h2>
+            <h2>
+                Intervención
+            </h2>
 
             <textarea
                 id="intervencion"
-                rows="5"></textarea>
+                rows="6"></textarea>
 
             <input
                 type="file"
                 id="fotoIntervencion"
                 accept="image/*">
 
-            <h2>Estado Final</h2>
+            <hr>
+
+            <h2>
+                Repuestos Instalados
+            </h2>
+
+            <div id="contenedorRepuestos">
+
+            </div>
+
+            <button
+                type="button"
+                id="btnAgregarRepuesto">
+
+                ➕ Agregar Repuesto
+
+            </button>
+
+            <hr>
+
+            <h2>
+                Estado Final
+            </h2>
 
             <textarea
                 id="estadoFinal"
@@ -113,7 +186,9 @@
                 id="fotoFinal"
                 accept="image/*">
 
-            <h2>Observaciones</h2>
+            <h2>
+                Observaciones
+            </h2>
 
             <textarea
                 id="observaciones"
@@ -122,7 +197,9 @@
             <button
                 type="button"
                 id="btnGenerar">
+
                 Generar PDF
+
             </button>
 
         </form>
