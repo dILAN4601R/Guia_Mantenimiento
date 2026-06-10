@@ -12,7 +12,14 @@
 <body>
 
     <div class="contenedor">
-        
+
+        <div class="encabezado">
+
+            <img
+                src="Logo.PNG"
+                alt="DM Electronics"
+                class="banner">
+
             <p class="autor">
                 Desarrollado por Dilan Mendoza
             </p>
@@ -26,16 +33,25 @@
         </div>
 
         <form id="formulario">
-            
+
             <label>Fecha</label>
-            <input type="date" id="fecha">
+            <input
+                type="text"
+                id="fecha"
+                readonly>
+
+            <label>Hora</label>
+            <input
+                type="text"
+                id="hora"
+                readonly>
+
             <label>Técnico</label>
             <input
                 type="text"
                 id="tecnico">
 
             <label>Tipo de mantenimiento</label>
-
             <select id="tipoMantenimiento">
                 <option>Preventivo</option>
                 <option>Correctivo</option>
@@ -112,6 +128,10 @@
         </form>
 
     </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
     <script src="app.js"></script>
 
