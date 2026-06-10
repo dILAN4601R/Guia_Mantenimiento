@@ -1,6 +1,6 @@
 document
-.getElementById("btnGenerar")
-.addEventListener("click", generarPDF);
+    .getElementById("btnGenerar")
+    .addEventListener("click", generarPDF);
 
 
 function obtenerConsecutivo() {
@@ -32,17 +32,20 @@ function leerImagen(input) {
 
         const reader = new FileReader();
 
-        reader.onload = function(e) {
+        reader.onload = function (e) {
 
             resolve(
                 e.target.result
             );
+
         };
 
         reader.readAsDataURL(
             input.files[0]
         );
+
     });
+
 }
 
 
@@ -54,6 +57,7 @@ async function generarPDF() {
 
     const consecutivo =
         obtenerConsecutivo();
+
 
     const fotoGeneral =
         await leerImagen(
@@ -75,6 +79,7 @@ async function generarPDF() {
             document.getElementById("fotoFinal")
         );
 
+
     let y = 20;
 
     pdf.setFontSize(20);
@@ -83,7 +88,9 @@ async function generarPDF() {
         "GUIA DE MANTENIMIENTO",
         105,
         y,
-        { align: "center" }
+        {
+            align: "center"
+        }
     );
 
     y += 10;
@@ -94,7 +101,9 @@ async function generarPDF() {
         consecutivo,
         105,
         y,
-        { align: "center" }
+        {
+            align: "center"
+        }
     );
 
     y += 15;
@@ -103,6 +112,14 @@ async function generarPDF() {
 
     pdf.text(
         `Fecha: ${document.getElementById("fecha").value}`,
+        15,
+        y
+    );
+
+    y += 8;
+
+    pdf.text(
+        `Hora: ${document.getElementById("hora").value}`,
         15,
         y
     );
@@ -173,7 +190,8 @@ async function generarPDF() {
         y
     );
 
-    y += (textoInicial.length * 6) + 5;
+    y +=
+        (textoInicial.length * 6) + 5;
 
     if (fotoInicial) {
 
@@ -187,15 +205,17 @@ async function generarPDF() {
         );
 
         y += 70;
+
     }
 
     if (y > 230) {
 
         pdf.addPage();
-        y = 20;
-    }
 
-    pdf.setFontSize(14);
+        y = 20;
+
+    }
+        pdf.setFontSize(14);
 
     pdf.text(
         "INTERVENCION",
@@ -219,7 +239,8 @@ async function generarPDF() {
         y
     );
 
-    y += (textoIntervencion.length * 6) + 5;
+    y +=
+        (textoIntervencion.length * 6) + 5;
 
     if (fotoIntervencion) {
 
@@ -233,12 +254,15 @@ async function generarPDF() {
         );
 
         y += 70;
+
     }
 
     if (y > 230) {
 
         pdf.addPage();
+
         y = 20;
+
     }
 
     pdf.setFontSize(14);
@@ -265,7 +289,8 @@ async function generarPDF() {
         y
     );
 
-    y += (textoFinal.length * 6) + 5;
+    y +=
+        (textoFinal.length * 6) + 5;
 
     if (fotoFinal) {
 
@@ -279,12 +304,15 @@ async function generarPDF() {
         );
 
         y += 70;
+
     }
 
     if (y > 230) {
 
         pdf.addPage();
+
         y = 20;
+
     }
 
     pdf.setFontSize(14);
@@ -311,14 +339,16 @@ async function generarPDF() {
         y
     );
 
-    y += (observaciones.length * 6) + 10;
-
-    if (fotoGeneral) {
+    y +=
+        (observaciones.length * 6) + 10;
+        if (fotoGeneral) {
 
         if (y > 180) {
 
             pdf.addPage();
+
             y = 20;
+
         }
 
         pdf.setFontSize(14);
@@ -339,9 +369,62 @@ async function generarPDF() {
             120,
             90
         );
+
     }
 
     pdf.save(
         `${consecutivo}_Guia_Mantenimiento.pdf`
     );
+
 }
+
+
+window.onload = function () {
+
+    const ahora = new Date();
+
+    const fecha =
+        ahora.getFullYear() + "-" +
+        String(ahora.getMonth() + 1).padStart(2, "0") + "-" +
+        String(ahora.getDate()).padStart(2, "0");
+
+    const hora =
+        String(ahora.getHours()).padStart(2, "0") + ":" +
+        String(ahora.getMinutes()).padStart(2, "0");
+
+    const campoFecha =
+        document.getElementById("fecha");
+
+    const campoHora =
+        document.getElementById("hora");
+
+    if (campoFecha) {
+
+        campoFecha.value = fecha;
+
+    }
+
+    if (campoHora) {
+
+        campoHora.value = hora;
+
+    }
+
+    let numero =
+        parseInt(
+            localStorage.getItem("contadorPDF")
+        ) || 1;
+
+    const consecutivo =
+        document.getElementById("consecutivoActual");
+
+    if (consecutivo) {
+
+        consecutivo.innerText =
+            "N" +
+            String(numero).padStart(4, "0");
+
+    }
+
+};
+    
