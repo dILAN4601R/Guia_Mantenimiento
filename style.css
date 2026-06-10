@@ -1,4 +1,4 @@
-{
+*{
     margin:0;
     padding:0;
     box-sizing:border-box;
@@ -16,6 +16,35 @@ body{
     background:white;
     padding:20px;
     border-radius:10px;
+    box-shadow:0 2px 10px rgba(0,0,0,0.1);
+}
+
+.encabezado{
+    text-align:center;
+    margin-bottom:25px;
+}
+
+.banner{
+    width:100%;
+    max-height:180px;
+    object-fit:cover;
+    border-radius:12px;
+    margin-bottom:20px;
+}
+
+.autor{
+    color:#666;
+    font-size:14px;
+    margin-top:10px;
+    margin-bottom:10px;
+}
+
+.consecutivo{
+    text-align:center;
+    font-size:22px;
+    font-weight:bold;
+    color:#0b5ed7;
+    margin-bottom:20px;
 }
 
 h1{
@@ -28,6 +57,7 @@ h2{
     margin-top:30px;
     margin-bottom:10px;
     font-size:24px;
+    color:#222;
 }
 
 label{
@@ -45,10 +75,18 @@ textarea{
     font-size:16px;
     border:1px solid #ccc;
     border-radius:6px;
+    background:white;
 }
 
 textarea{
     resize:vertical;
+    min-height:120px;
+}
+
+input[type="file"]{
+    margin-top:10px;
+    margin-bottom:10px;
+    padding:8px;
 }
 
 button{
@@ -56,16 +94,39 @@ button{
     padding:16px;
     margin-top:30px;
     font-size:18px;
+    font-weight:bold;
     border:none;
-    border-radius:6px;
-}
-.encabezado{
-    text-align:center;
-    margin-bottom:25px;
+    border-radius:8px;
+    background:#0b5ed7;
+    color:white;
+    cursor:pointer;
+    transition:0.2s;
 }
 
-.autor{
-    color:#666;
-    font-size:14px;
-    margin-top:10px;
+button:hover{
+    background:#094db1;
+}
+
+button:active{
+    transform:scale(0.98);
+}
+
+@media (max-width:768px){
+
+    .contenedor{
+        padding:15px;
+    }
+
+    h1{
+        font-size:28px;
+    }
+
+    h2{
+        font-size:22px;
+    }
+
+    .banner{
+        max-height:140px;
+    }
+
 }
