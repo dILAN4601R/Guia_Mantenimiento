@@ -1,13 +1,22 @@
 document
     .getElementById("btnGenerar")
-    .addEventListener("click", generarPDF);
+    .addEventListener(
+        "click",
+        generarPDF
+    );
 
+
+// =========================
+// CONTADOR
+// =========================
 
 function obtenerConsecutivo() {
 
     let numero =
         parseInt(
-            localStorage.getItem("contadorPDF")
+            localStorage.getItem(
+                "contadorPDF"
+            )
         ) || 1;
 
     localStorage.setItem(
@@ -15,39 +24,192 @@ function obtenerConsecutivo() {
         numero + 1
     );
 
-    return "N" +
-        String(numero).padStart(4, "0");
+    return (
+        "N" +
+        String(numero).padStart(
+            4,
+            "0"
+        )
+    );
+
 }
 
+
+// =========================
+// FECHA Y HORA
+// =========================
+
+window.onload = function () {
+
+    const ahora =
+        new Date();
+
+    const fecha =
+        ahora.getFullYear() +
+        "-" +
+        String(
+            ahora.getMonth() + 1
+        ).padStart(2, "0") +
+        "-" +
+        String(
+            ahora.getDate()
+        ).padStart(2, "0");
+
+    const hora =
+        String(
+            ahora.getHours()
+        ).padStart(2, "0") +
+        ":" +
+        String(
+            ahora.getMinutes()
+        ).padStart(2, "0");
+
+    document.getElementById(
+        "fecha"
+    ).value = fecha;
+
+    document.getElementById(
+        "hora"
+    ).value = hora;
+
+};
+
+
+// =========================
+// LEER IMAGEN
+// =========================
 
 function leerImagen(input) {
 
-    return new Promise((resolve) => {
+    return new Promise(
+        (resolve) => {
 
-        if (!input.files.length) {
+            if (
+                !input ||
+                !input.files ||
+                input.files.length === 0
+            ) {
 
-            resolve(null);
-            return;
-        }
+                resolve(null);
+                return;
 
-        const reader = new FileReader();
+            }
 
-        reader.onload = function (e) {
+            const reader =
+                new FileReader();
 
-            resolve(
-                e.target.result
+            reader.onload =
+                function (e) {
+
+                    resolve(
+                        e.target.result
+                    );
+
+                };
+
+            reader.readAsDataURL(
+                input.files[0]
             );
 
-        };
-
-        reader.readAsDataURL(
-            input.files[0]
-        );
-
-    });
+        }
+    );
 
 }
 
+
+
+// =========================
+// REPUESTOS DINAMICOS
+// =========================
+
+let contadorRepuestos = 0;
+
+
+document
+    .getElementById(
+        "btnAgregarRepuesto"
+    )
+    .addEventListener(
+        "click",
+        agregarRepuesto
+    );
+
+
+function agregarRepuesto() {
+
+    contadorRepuestos++;
+
+    const contenedor =
+        document.getElementById(
+            "contenedorRepuestos"
+        );
+
+    const tarjeta =
+        document.createElement(
+            "div"
+        );
+
+    tarjeta.className =
+        "repuesto";
+
+    tarjeta.id =
+        "repuesto_" +
+        contadorRepuestos;
+
+    tarjeta.innerHTML = `
+
+        <h3>
+            REPUESTO ${contadorRepuestos}
+        </h3>
+
+        <label>
+            Nombre del repuesto
+        </label>
+
+        <input
+            type="text"
+            class="nombreRepuesto">
+
+        <label>
+            Foto del repuesto
+        </label>
+
+        <input
+            type="file"
+            class="fotoRepuesto"
+            accept="image/*">
+
+        <button
+            type="button"
+            class="btnEliminarRepuesto">
+
+            🗑 Eliminar Repuesto
+
+        </button>
+
+    `;
+
+    contenedor.appendChild(
+        tarjeta
+    );
+
+    tarjeta
+        .querySelector(
+            ".btnEliminarRepuesto"
+        )
+        .addEventListener(
+            "click",
+            function () {
+
+                tarjeta.remove();
+
+            }
+        );
+
+}
+// =====================================
+// GENERAR PDF
+// =====================================
 
 async function generarPDF() {
 
@@ -58,27 +220,33 @@ async function generarPDF() {
     const consecutivo =
         obtenerConsecutivo();
 
-
     const fotoGeneral =
         await leerImagen(
-            document.getElementById("fotoGeneral")
+            document.getElementById(
+                "fotoGeneral"
+            )
         );
 
     const fotoInicial =
         await leerImagen(
-            document.getElementById("fotoInicial")
+            document.getElementById(
+                "fotoInicial"
+            )
         );
 
     const fotoIntervencion =
         await leerImagen(
-            document.getElementById("fotoIntervencion")
+            document.getElementById(
+                "fotoIntervencion"
+            )
         );
 
     const fotoFinal =
         await leerImagen(
-            document.getElementById("fotoFinal")
+            document.getElementById(
+                "fotoFinal"
+            )
         );
-
 
     let y = 20;
 
@@ -180,7 +348,9 @@ async function generarPDF() {
 
     let textoInicial =
         pdf.splitTextToSize(
-            document.getElementById("estadoInicial").value,
+            document.getElementById(
+                "estadoInicial"
+            ).value,
             170
         );
 
@@ -198,13 +368,13 @@ async function generarPDF() {
         pdf.addImage(
             fotoInicial,
             "JPEG",
-            15,
+            35,
             y,
-            80,
-            60
+            140,
+            100
         );
 
-        y += 70;
+        y += 110;
 
     }
 
@@ -215,7 +385,8 @@ async function generarPDF() {
         y = 20;
 
     }
-        pdf.setFontSize(14);
+
+    pdf.setFontSize(14);
 
     pdf.text(
         "INTERVENCION",
@@ -229,7 +400,9 @@ async function generarPDF() {
 
     let textoIntervencion =
         pdf.splitTextToSize(
-            document.getElementById("intervencion").value,
+            document.getElementById(
+                "intervencion"
+            ).value,
             170
         );
 
@@ -247,15 +420,101 @@ async function generarPDF() {
         pdf.addImage(
             fotoIntervencion,
             "JPEG",
-            15,
+            35,
             y,
-            80,
-            60
+            140,
+            100
         );
 
-        y += 70;
+        y += 110;
 
     }
+
+    if (y > 230) {
+
+        pdf.addPage();
+
+        y = 20;
+
+    }
+
+    // ==========================
+    // REPUESTOS DINAMICOS
+    // ==========================
+
+    const repuestos =
+        document.querySelectorAll(
+            ".repuesto"
+        );
+
+    for (let i = 0; i < repuestos.length; i++) {
+
+        const nombre =
+
+            repuestos[i]
+            .querySelector(
+                ".nombreRepuesto"
+            )
+            .value;
+
+        const foto =
+
+            await leerImagen(
+
+                repuestos[i]
+                .querySelector(
+                    ".fotoRepuesto"
+                )
+
+            );
+
+        if (y > 180) {
+
+            pdf.addPage();
+
+            y = 20;
+
+        }
+
+        pdf.setFontSize(14);
+
+        pdf.text(
+            `REPUESTO ${i + 1}`,
+            15,
+            y
+        );
+
+        y += 8;
+
+        pdf.setFontSize(11);
+
+        pdf.text(
+            `Nombre: ${nombre}`,
+            15,
+            y
+        );
+
+        y += 8;
+
+        if (foto) {
+
+            pdf.addImage(
+                foto,
+                "JPEG",
+                35,
+                y,
+                140,
+                100
+            );
+
+            y += 110;
+
+        }
+
+    }
+        // ==========================
+    // ESTADO FINAL
+    // ==========================
 
     if (y > 230) {
 
@@ -279,7 +538,9 @@ async function generarPDF() {
 
     let textoFinal =
         pdf.splitTextToSize(
-            document.getElementById("estadoFinal").value,
+            document.getElementById(
+                "estadoFinal"
+            ).value,
             170
         );
 
@@ -297,15 +558,20 @@ async function generarPDF() {
         pdf.addImage(
             fotoFinal,
             "JPEG",
-            15,
+            35,
             y,
-            80,
-            60
+            140,
+            100
         );
 
-        y += 70;
+        y += 110;
 
     }
+
+
+    // ==========================
+    // OBSERVACIONES
+    // ==========================
 
     if (y > 230) {
 
@@ -329,7 +595,9 @@ async function generarPDF() {
 
     let observaciones =
         pdf.splitTextToSize(
-            document.getElementById("observaciones").value,
+            document.getElementById(
+                "observaciones"
+            ).value,
             170
         );
 
@@ -341,7 +609,13 @@ async function generarPDF() {
 
     y +=
         (observaciones.length * 6) + 10;
-        if (fotoGeneral) {
+
+
+    // ==========================
+    // FOTO GENERAL
+    // ==========================
+
+    if (fotoGeneral) {
 
         if (y > 180) {
 
@@ -364,67 +638,21 @@ async function generarPDF() {
         pdf.addImage(
             fotoGeneral,
             "JPEG",
-            15,
+            35,
             y,
-            120,
-            90
+            140,
+            100
         );
 
     }
+
+
+    // ==========================
+    // GUARDAR PDF
+    // ==========================
 
     pdf.save(
         `${consecutivo}_Guia_Mantenimiento.pdf`
     );
 
 }
-
-
-window.onload = function () {
-
-    const ahora = new Date();
-
-    const fecha =
-        ahora.getFullYear() + "-" +
-        String(ahora.getMonth() + 1).padStart(2, "0") + "-" +
-        String(ahora.getDate()).padStart(2, "0");
-
-    const hora =
-        String(ahora.getHours()).padStart(2, "0") + ":" +
-        String(ahora.getMinutes()).padStart(2, "0");
-
-    const campoFecha =
-        document.getElementById("fecha");
-
-    const campoHora =
-        document.getElementById("hora");
-
-    if (campoFecha) {
-
-        campoFecha.value = fecha;
-
-    }
-
-    if (campoHora) {
-
-        campoHora.value = hora;
-
-    }
-
-    let numero =
-        parseInt(
-            localStorage.getItem("contadorPDF")
-        ) || 1;
-
-    const consecutivo =
-        document.getElementById("consecutivoActual");
-
-    if (consecutivo) {
-
-        consecutivo.innerText =
-            "N" +
-            String(numero).padStart(4, "0");
-
-    }
-
-};
-    
