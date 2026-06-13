@@ -557,7 +557,7 @@ async function generarPDF() {
     let textoObservacionesPositivas =
         pdf.splitTextToSize(
             document.getElementById(
-                "Observaciones Positivas"
+                "observacionesPositivas"
             ).value,
             170
         );
@@ -584,7 +584,7 @@ async function generarPDF() {
     let textoObservacionesNegativas =
         pdf.splitTextToSize(
             document.getElementById(
-                "Observaciones Negativas"
+                "observacionesNegativas"
             ).value,
             170
         );
@@ -599,7 +599,7 @@ async function generarPDF() {
         (textoObservacionesNegativas.length * 6) + 5;
         
    pdf.text(
-        "FURURO CAMBIO DE REPUESTOS",
+        "FUTURO CAMBIO DE REPUESTOS",
         15,
         y
     );
@@ -611,7 +611,7 @@ async function generarPDF() {
     let textoCambio =
         pdf.splitTextToSize(
             document.getElementById(
-                "Futuro Cambio de Repuestos"
+                "futuroCambiodeRepuestos"
             ).value,
             170
         );
