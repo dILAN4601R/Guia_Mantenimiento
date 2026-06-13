@@ -223,7 +223,7 @@ async function generarPDF() {
     const fotoGeneral =
         await leerImagen(
             document.getElementById(
-                "fotoGeneral"
+                "fotoSerie"
             )
         );
 
