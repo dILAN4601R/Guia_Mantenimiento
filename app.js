@@ -220,7 +220,7 @@ async function generarPDF() {
     const consecutivo =
         obtenerConsecutivo();
 
-    const fotoGeneral =
+    const fotoSerie =
         await leerImagen(
             document.getElementById(
                 "fotoSerie"
@@ -335,6 +335,37 @@ async function generarPDF() {
     y += 15;
 
     pdf.setFontSize(14);
+    
+    if (fotoSerie) {
+
+        if (y > 180) {
+
+            pdf.addPage();
+
+            y = 20;
+
+        }
+
+        pdf.setFontSize(14);
+
+        pdf.text(
+            "FOTO DE LA SERIE",
+            15,
+            y
+        );
+
+        y += 10;
+
+        pdf.addImage(
+            fotoSerie,
+            "JPEG",
+            35,
+            y,
+            140,
+            100
+        );
+
+    }
 
     pdf.text(
         "ESTADO INICIAL",
@@ -512,6 +543,89 @@ async function generarPDF() {
         }
 
     }
+    
+    pdf.text(
+        "OBSERVACIONES POSITIVAS",
+        15,
+        y
+    );
+
+    y += 8;
+
+    pdf.setFontSize(11);
+
+    let textoObservacionesPositivas =
+        pdf.splitTextToSize(
+            document.getElementById(
+                "Observaciones Positivas"
+            ).value,
+            170
+        );
+
+    pdf.text(
+        textoObservacionesPositivas,
+        15,
+        y
+    );
+
+    y +=
+        (textoObservacionesPositivas.length * 6) + 5;
+        
+    pdf.text(
+        "OBSERVACIONES NEGATIVAS",
+        15,
+        y
+    );
+
+    y += 8;
+
+    pdf.setFontSize(11);
+
+    let textoObservacionesNegativas =
+        pdf.splitTextToSize(
+            document.getElementById(
+                "Observaciones Negativas"
+            ).value,
+            170
+        );
+
+    pdf.text(
+        textoObservacionesNegativas,
+        15,
+        y
+    );
+
+    y +=
+        (textoObservacionesNegativas.length * 6) + 5;
+        
+   pdf.text(
+        "FURURO CAMBIO DE REPUESTOS",
+        15,
+        y
+    );
+
+    y += 8;
+
+    pdf.setFontSize(11);
+
+    let textoCambio =
+        pdf.splitTextToSize(
+            document.getElementById(
+                "Futuro Cambio de Repuestos"
+            ).value,
+            170
+        );
+
+    pdf.text(
+        textoCambio,
+        15,
+        y
+    );
+
+    y +=
+        (textoCambio.length * 6) + 5;
+        
+        
         // ==========================
     // ESTADO FINAL
     // ==========================
@@ -609,43 +723,6 @@ async function generarPDF() {
 
     y +=
         (observaciones.length * 6) + 10;
-
-
-    // ==========================
-    // FOTO GENERAL
-    // ==========================
-
-    if (fotoGeneral) {
-
-        if (y > 180) {
-
-            pdf.addPage();
-
-            y = 20;
-
-        }
-
-        pdf.setFontSize(14);
-
-        pdf.text(
-            "FOTO GENERAL",
-            15,
-            y
-        );
-
-        y += 10;
-
-        pdf.addImage(
-            fotoGeneral,
-            "JPEG",
-            35,
-            y,
-            140,
-            100
-        );
-
-    }
-
 
     // ==========================
     // GUARDAR PDF
