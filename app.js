@@ -119,11 +119,10 @@ function leerImagen(input) {
 
 
 // =========================
-// REPUESTOS DINAMICOS
+// REPUESTOS DINÁMICOS
 // =========================
 
 let contadorRepuestos = 0;
-
 
 document
     .getElementById(
@@ -334,17 +333,7 @@ async function generarPDF() {
 
     y += 15;
 
-    pdf.setFontSize(14);
-    
     if (fotoSerie) {
-
-        if (y > 180) {
-
-            pdf.addPage();
-
-            y = 20;
-
-        }
 
         pdf.setFontSize(14);
 
@@ -365,7 +354,19 @@ async function generarPDF() {
             100
         );
 
+        y += 110;
+
     }
+
+    if (y > 230) {
+
+        pdf.addPage();
+
+        y = 20;
+
+    }
+
+    pdf.setFontSize(14);
 
     pdf.text(
         "ESTADO INICIAL",
@@ -469,19 +470,18 @@ async function generarPDF() {
 
     }
 
-    // ==========================
-    // REPUESTOS DINAMICOS
-    // ==========================
-
     const repuestos =
         document.querySelectorAll(
             ".repuesto"
         );
 
-    for (let i = 0; i < repuestos.length; i++) {
+    for (
+        let i = 0;
+        i < repuestos.length;
+        i++
+    ) {
 
         const nombre =
-
             repuestos[i]
             .querySelector(
                 ".nombreRepuesto"
@@ -489,23 +489,12 @@ async function generarPDF() {
             .value;
 
         const foto =
-
             await leerImagen(
-
                 repuestos[i]
                 .querySelector(
                     ".fotoRepuesto"
                 )
-
             );
-
-        if (y > 180) {
-
-            pdf.addPage();
-
-            y = 20;
-
-        }
 
         pdf.setFontSize(14);
 
@@ -542,8 +531,21 @@ async function generarPDF() {
 
         }
 
+        if (y > 230) {
+
+            pdf.addPage();
+
+            y = 20;
+
+        }
+
     }
-    
+        // ==========================
+    // OBSERVACIONES POSITIVAS
+    // ==========================
+
+    pdf.setFontSize(14);
+
     pdf.text(
         "OBSERVACIONES POSITIVAS",
         15,
@@ -554,23 +556,39 @@ async function generarPDF() {
 
     pdf.setFontSize(11);
 
-    let textoObservacionesPositivas =
+    let textoPositivas =
         pdf.splitTextToSize(
             document.getElementById(
-                "observacionesPositivas"
+                "ObservacionesPositivas"
             ).value,
             170
         );
 
     pdf.text(
-        textoObservacionesPositivas,
+        textoPositivas,
         15,
         y
     );
 
     y +=
-        (textoObservacionesPositivas.length * 6) + 5;
-        
+        (textoPositivas.length * 6) + 10;
+
+
+    if (y > 230) {
+
+        pdf.addPage();
+
+        y = 20;
+
+    }
+
+
+    // ==========================
+    // OBSERVACIONES NEGATIVAS
+    // ==========================
+
+    pdf.setFontSize(14);
+
     pdf.text(
         "OBSERVACIONES NEGATIVAS",
         15,
@@ -581,24 +599,40 @@ async function generarPDF() {
 
     pdf.setFontSize(11);
 
-    let textoObservacionesNegativas =
+    let textoNegativas =
         pdf.splitTextToSize(
             document.getElementById(
-                "observacionesNegativas"
+                "ObservacionesNegativas"
             ).value,
             170
         );
 
     pdf.text(
-        textoObservacionesNegativas,
+        textoNegativas,
         15,
         y
     );
 
     y +=
-        (textoObservacionesNegativas.length * 6) + 5;
-        
-   pdf.text(
+        (textoNegativas.length * 6) + 10;
+
+
+    if (y > 230) {
+
+        pdf.addPage();
+
+        y = 20;
+
+    }
+
+
+    // ==========================
+    // FUTURO CAMBIO DE REPUESTOS
+    // ==========================
+
+    pdf.setFontSize(14);
+
+    pdf.text(
         "FUTURO CAMBIO DE REPUESTOS",
         15,
         y
@@ -611,7 +645,7 @@ async function generarPDF() {
     let textoCambio =
         pdf.splitTextToSize(
             document.getElementById(
-                "futuroCambiodeRepuestos"
+                "Futurocambioderepuestos"
             ).value,
             170
         );
@@ -623,12 +657,8 @@ async function generarPDF() {
     );
 
     y +=
-        (textoCambio.length * 6) + 5;
-        
-        
-        // ==========================
-    // ESTADO FINAL
-    // ==========================
+        (textoCambio.length * 6) + 10;
+
 
     if (y > 230) {
 
@@ -637,6 +667,11 @@ async function generarPDF() {
         y = 20;
 
     }
+
+
+    // ==========================
+    // ESTADO FINAL
+    // ==========================
 
     pdf.setFontSize(14);
 
@@ -667,6 +702,7 @@ async function generarPDF() {
     y +=
         (textoFinal.length * 6) + 5;
 
+
     if (fotoFinal) {
 
         pdf.addImage(
@@ -683,10 +719,6 @@ async function generarPDF() {
     }
 
 
-    // ==========================
-    // OBSERVACIONES
-    // ==========================
-
     if (y > 230) {
 
         pdf.addPage();
@@ -694,6 +726,11 @@ async function generarPDF() {
         y = 20;
 
     }
+
+
+    // ==========================
+    // OBSERVACIONES
+    // ==========================
 
     pdf.setFontSize(14);
 
@@ -723,6 +760,7 @@ async function generarPDF() {
 
     y +=
         (observaciones.length * 6) + 10;
+
 
     // ==========================
     // GUARDAR PDF
